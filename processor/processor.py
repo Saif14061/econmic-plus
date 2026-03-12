@@ -35,3 +35,12 @@ cursor.execute("""
                
     )
 """)
+conn.commit()
+for message in consumer:
+    data = json.loads(message.value)
+
+    if message.topic == "news":
+        print(f"Processing News update: {message.value}")
+    elif message.topic == "stocks":
+        print(f"Processing Stock update: {message.value}")
+
