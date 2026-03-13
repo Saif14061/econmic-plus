@@ -33,6 +33,7 @@ cursor.execute("""
                
         
                
+               
     )
 """)
 conn.commit()
@@ -40,7 +41,26 @@ for message in consumer:
     data = json.loads(message.value)
 
     if message.topic == "news":
-        print(f"Processing News update: {message.value}")
+        articles_list = data["articles"]
+        for article in articles_list:
+            headline = article["title"]
+            source = article["source"]["name"]
+            sentiment_score = TextBlob(headline).sentiment.polarity
+            cursor.execute("""
+            INSERT INTO news (headline, source, sentiment_score)
+            VALUES (%s, %s,%s)
+            """, (headline,source,sentiment_score))
+            conn.commit()
     elif message.topic == "stocks":
-        print(f"Processing Stock update: {message.value}")
-
+            cursor.execute("""
+            INSERT INTO stocks (ticker,price)
+            VALUES (%s, %s)
+            """, ("S&P500",data["SP500"]))
+            conn.commit()
+            cursor.execute("""
+            INSERT INTO stocks (ticker,price)
+            VALUES (%s, %s)
+            """, ("FTSE100",data["FTSE100"]))
+            conn.commit()
+           
+           
