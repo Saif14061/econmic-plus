@@ -15,7 +15,7 @@ cursor.execute("""
         HEADLINE     TEXT,
         SOURCE       TEXT,
         SENTIMENT_SCORE FLOAT,
-        TIMESTAMP    TIMESTAMP DEFAULT NOW(),
+        TIMESTAMP    TIMESTAMP DEFAULT NOW()
         
                
         
@@ -28,7 +28,7 @@ cursor.execute("""
         ID         SERIAL PRIMARY KEY,
         TICKER     TEXT,
         PRICE      FLOAT,
-        TIMESTAMP  TIMESTAMP DEFAULT NOW(),
+        TIMESTAMP  TIMESTAMP DEFAULT NOW()
         
                
         
@@ -52,15 +52,16 @@ for message in consumer:
             """, (headline,source,sentiment_score))
             conn.commit()
     elif message.topic == "stocks":
+            print(data)
             cursor.execute("""
             INSERT INTO stocks (ticker,price)
             VALUES (%s, %s)
-            """, ("S&P500",data["SP500"]))
+            """, ("S&P500",data["sp500"]))
             conn.commit()
             cursor.execute("""
             INSERT INTO stocks (ticker,price)
             VALUES (%s, %s)
-            """, ("FTSE100",data["FTSE100"]))
+            """, ("FTSE100",data["ftse100"]))
             conn.commit()
            
            

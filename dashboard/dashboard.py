@@ -23,7 +23,7 @@ st.dataframe(news_df)
 st.subheader("stock prices")
 st.dataframe(stocks_df)
 
-st.subheader("News")
+st.subheader("News Impact (negative,neutral,postive)")
 st.bar_chart(news_df['sentiment_label'].value_counts())
 
 

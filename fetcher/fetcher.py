@@ -8,7 +8,7 @@ producer = KafkaProducer(bootstrap_servers='localhost:9092')
 newsapi = NewsApiClient(api_key = "b915d1832ed040a9bbb3ee44ddadab3b") #API key for NewsAPI
 
 while True:
-    articles = newsapi.get_everything(q="economy",language="en",pageSize=10)
+    articles = newsapi.get_everything(q="economy",language="en",page_size=10)
     sp500 = yf.Ticker("^GSPC")
     ftse100 = yf.Ticker("^FTSE")
     sp500_price = sp500.fast_info['last_price']
@@ -19,5 +19,5 @@ while True:
         "sp500":sp500_price,
         "ftse100":ftse100_price
     }
-    producer.send("stock",json.dumps(stock_data).encode('utf-8'))
-    time.sleep(300)
+    producer.send("stocks",json.dumps(stock_data).encode('utf-8'))
+    time.sleep(10)
